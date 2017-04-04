@@ -1,0 +1,56 @@
+{% comment %}
+Plantilla tomada de http://www.bypeople.com/web-chat-widget/
+{% endcomment %}{% load static %}<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}"/>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.1.1/list.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script type="text/javascript" src="{% static 'js/chat.js' %}"></script>
+</head>
+<body>
+<div class="container clearfix">
+    <div class="people-list" id="people-list">
+        <div class="search">
+            <p style="color: #fff; font-size: 15px;">Usuarios en línea</p>
+        </div>
+        <ul class="list" id="user-list"></ul>
+    </div>
+
+    <div class="chat">
+        <div class="chat-header clearfix">
+            <img src="{% static 'img/user_avatar.png' %}" alt="avatar"/>
+
+            <div class="chat-about">
+                <div class="chat-with">{{ user.get_full_name }}</div>
+            </div>
+            <a href="{% url 'logout' %}">Cerrar sesión</a>
+        </div> <!-- end Chat-header -->
+
+        <div class="chat-history">
+            <!-- Campos de control del chat. -->
+            <input type="hidden" name="user_id" id="user_id" value="{{ user.id }}"/>
+            <input type="hidden" name="messages_url" id="messages_url" value="{% url 'last-n' %}"/>
+            <input type="hidden" name="updates_url" id="updates_url" value="{% url 'updates' %}"/>
+            <input type="hidden" name="online_url" id="online_url" value="{% url 'onlineusers' %}"/>
+            <ul></ul>
+        </div> <!-- end Chat-history -->
+
+        <div class="chat-message clearfix">
+            <textarea name="message-to-send" id="message-to-send" placeholder="Ingresa tu mensaje"
+                      rows="3" data-ajax-url="{% url 'post' %}"></textarea>
+            <div class="error-msg" id="extra-msg"></div>
+            <button>Enviar</button>
+        </div>
+
+    </div> <!-- end Chat -->
+
+</div> <!-- end container -->
+</body>
+</html>

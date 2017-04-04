@@ -1,0 +1,79 @@
+{% comment %}
+Plantilla tomada de http://codepen.io/jcoulterdesign/pen/azepmX?utm_source=bypeople
+{% endcomment %}{% load static %}<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Iniciar sesión</title>
+
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}"/>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            var textPasswordInputs = $('input[type="text"],input[type="password"]');
+            textPasswordInputs.focus(function(){
+              $(this).prev().animate({'opacity':'1'},200)
+            });
+            textPasswordInputs.blur(function(){
+              $(this).prev().animate({'opacity':'.5'},200)
+            });
+            textPasswordInputs.keyup(function(){
+              if(!$(this).val() == ''){
+                $(this).next().animate({'opacity':'1','right' : '30'},200)
+              } else {
+                $(this).next().animate({'opacity':'0','right' : '20'},200)
+              }
+            });
+
+            $('.tab').click(function(){
+              $(this).fadeOut(200,function(){
+                $(this).parent().animate({'left':'0'})
+              });
+            });
+        });
+    </script>
+</head>
+<body>
+<div class='login'>
+    <div class='login_title'>
+        <span>Iniciar sesión</span>
+    </div>
+    {% if errors %}
+    <div class="errors">
+    {% for error in errors %}
+        <p>{{ error }}</p>
+    {% endfor %}
+    </div>
+    {% endif %}
+    <div class='login_fields'>
+        <form action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+        <div class='login_fields__user'>
+            <div class='icon'>
+                <img src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/217233/user_icon_copy.png'>
+            </div>
+            <input placeholder='Nombre de usuario' type='text' name="username">
+            <div class='validation'>
+                <img src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/217233/tick.png'>
+            </div>
+        </div>
+        <div class='login_fields__password'>
+            <div class='icon'>
+                <img src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/217233/lock_icon_copy.png'>
+            </div>
+            <input placeholder='Contraseña' type='password' name="pass">
+            <div class='validation'>
+                <img src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/217233/tick.png'>
+            </div>
+        </div>
+        <div class='login_fields__submit'>
+            <input type='submit' value='Ingresar'>
+        </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
