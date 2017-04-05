@@ -1,6 +1,5 @@
-syntax:glob
 *.pyc
 .idea
 __pycache__
 django.log
-chatroom.sqlite3
+.DS_Store
