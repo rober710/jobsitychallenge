@@ -1,13 +1,15 @@
 # encoding: utf-8
 
-from django.conf.urls import url
+from django.conf.urls import include, url
+from django.contrib.auth import views as auth_views
 
 import chatroom.views as chatroom_views
 import chatroom.restapi as rest_views
 
 urlpatterns = [
-    url(r'^$', chatroom_views.LoginView.as_view(), name='login'),
-    url(r'^logout$', chatroom_views.LogoutView.as_view(), name='logout'),
+    url(r'^$', chatroom_views.HomeView.as_view(), name='home'),
+    url(r'^login$', auth_views.login, {'template_name': 'login.html'}, name='login'),
+    url(r'^logout$', auth_views.logout, name='logout'),
     url(r'^chatroom$', chatroom_views.ChatroomView.as_view(), name='chat'),
 
     # API de mensajes para el chat

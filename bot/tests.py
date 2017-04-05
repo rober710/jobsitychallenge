@@ -12,7 +12,7 @@ from .server import Bot
 class BotRequestTest(TestCase):
 
     def setUp(self):
-        self.bot = Bot(use_rabbitmq=False)
+        self.bot = Bot(configure_message_bus=False)
 
     def test_stocks_api_existing_company(self):
         response = self.bot.query_stock('AAPL')

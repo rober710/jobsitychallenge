@@ -37,8 +37,8 @@ class PostMessage(AjaxView):
             return self._process_command(command, arg, request.user)
 
         # It didn't matched the regex. Save message in database and return it to the browser to show it.
-        message_obj = Message(user=request.user, date_posted=timezone.now())
-        message_obj.text = posted_message
+        message_obj = Message.objects.create(user=request.user, date_posted=timezone.now(),
+                                             text=posted_message)
 
         try:
             message_obj.save()
@@ -71,7 +71,7 @@ class PostMessage(AjaxView):
         # Save a record of the message to the database. The message's UUID is used as a correlation id
         # in RabbitMQ to match it with its answer.
         request = json.dumps({'type': 'stock', 'arg': arg})
-        command_rec = CommandMessage(date_posted=timezone.now(), request=request, user=user)
+        command_rec = CommandMessage.objects.create(date_posted=timezone.now(), request=request, user=user)
         command_rec.save()
 
         self._send_request(str(command_rec.uuid), request)
@@ -164,7 +164,8 @@ class GetUpdates(AjaxView):
                     return self.create_error_response('Invalid date: ' + last_timestamp_str, status=400)
 
             # Get pending messages for the current user.
-            bot_messages = (CommandMessage.objects.filter(user=request.user, date_answered__isnull=False)
+            bot_messages = (CommandMessage.objects.filter(user=request.user, date_answered__isnull=False,
+                                                          read=False)
                             .order_by('-date_posted'))
             bot_messages = reversed(list(bot_messages))
 
@@ -178,7 +179,8 @@ class GetUpdates(AjaxView):
                                          'user': {'id': 0, 'username': 'Bot'}, 'type': 'command',
                     'timestamp': datetime_aware_to_str(message.date_answered)})
 
-            CommandMessage.objects.filter(user=request.user, date_answered__isnull=False).delete()
+            (CommandMessage.objects.filter(user=request.user, date_answered__isnull=False, read=False)
+             .update(read=True))
         except Exception as e:
             logger.error('Error getting pending messages for the user.')
             logger.exception(e)
@@ -198,7 +200,7 @@ class GetUpdates(AjaxView):
         if response_json['error']:
             return [self._create_message_error_response(response_json['message'], command_message)]
 
-        # Determinar qué consulta se hizo para procesar la respuesta.
+        # Check which command this answer belongs to, in order to choose the response format.
         request_json = json.loads(command_message.request)
         if request_json['type'] == 'stock':
             return [{'text': response_json['message'], 'user': {'id': 0, 'username': 'Bot'},

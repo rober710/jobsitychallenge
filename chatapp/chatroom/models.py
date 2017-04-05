@@ -14,9 +14,7 @@ class Message(models.Model):
     """
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='messages',
                              verbose_name='User who posted the message.')
-
     date_posted = models.DateTimeField('Posted date')
-
     text = models.TextField('Message text')
 
     def __str__(self):
@@ -42,17 +40,13 @@ class CommandMessage(models.Model):
     """
     # This field holds the correlation_id of the message to match it against the received response.
     uuid = models.UUIDField('message identifier', primary_key=True, default=uuid.uuid4, editable=False)
-
     date_posted = models.DateTimeField('posted date')
-
     date_answered = models.DateTimeField('response date', null=True, blank=True)
-
     request = models.TextField('the contents of the message sent')
-
     response = models.TextField('the contents of the message received', null=True, blank=True)
-
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='+',
                              verbose_name='user who sent the command.')
+    read = models.BooleanField('indicates whether the message was sent to the user.', default=False)
 
     def __str__(self):
         return 'Command {0} from {1}'.format(self.uuid, self.user.username)

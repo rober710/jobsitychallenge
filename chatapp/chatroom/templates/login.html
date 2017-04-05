@@ -41,11 +41,9 @@ Plantilla tomada de http://codepen.io/jcoulterdesign/pen/azepmX?utm_source=bypeo
     <div class='login_title'>
         <span>Iniciar sesión</span>
     </div>
-    {% if errors %}
+    {% if form.errors %}
     <div class="errors">
-    {% for error in errors %}
-        <p>{{ error }}</p>
-    {% endfor %}
+        <p>Incorrect username or password.</p>
     </div>
     {% endif %}
     <div class='login_fields'>
@@ -64,7 +62,7 @@ Plantilla tomada de http://codepen.io/jcoulterdesign/pen/azepmX?utm_source=bypeo
             <div class='icon'>
                 <img src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/217233/lock_icon_copy.png'>
             </div>
-            <input placeholder='Contraseña' type='password' name="pass">
+            <input placeholder='Contraseña' type='password' name="password">
             <div class='validation'>
                 <img src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/217233/tick.png'>
             </div>

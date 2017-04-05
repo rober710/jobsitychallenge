@@ -3,7 +3,6 @@
 import threading
 
 from django.apps import AppConfig
-
 from .receiver import BotReceiver
 
 
