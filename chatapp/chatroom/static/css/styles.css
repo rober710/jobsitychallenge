@@ -355,8 +355,17 @@ body .login_fields__submit input:hover {
 }
 .chat .chat-history .message-data-time {
   color: #a8aab1;
-  padding-left: 6px;
+  padding-left: 2px;
+  padding-right: 2px;
+  display: inline-block;
 }
+
+.chat .chat-history .message-data-name {
+  margin-left: 2px;
+  margin-right: 2px;
+  display: inline-block;
+}
+
 .chat .chat-history .message {
   color: white;
   padding: 18px 20px;

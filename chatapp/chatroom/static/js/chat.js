@@ -132,15 +132,17 @@ var Chat = {
         }
 
         var header = $('<div/>').addClass('message-data');
+        var date = moment(messageInfo.timestamp);
+
         if (mine) {
             header.addClass('align-right');
-            header.append($('<span/>').addClass('message-data-time').text(messageInfo.timestamp));
+            header.append($('<span/>').addClass('message-data-time').text(date.format('LLL')));
             header.append($('<span/>').addClass('message-data-name').text(messageInfo.user.username));
             header.append($('<i class="fa fa-circle me"></i>'));
         } else {
             header.append($('<span/>').addClass('message-data-name').append(
                 $('<i class="fa fa-circle online"></i>')).text(messageInfo.user.username));
-            header.append($('<span/>').addClass('message-data-time').text(messageInfo.timestamp));
+            header.append($('<span/>').addClass('message-data-time').text(date.format('LLL')));
         }
 
         header.appendTo(item);

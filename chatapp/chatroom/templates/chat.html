@@ -12,13 +12,14 @@ Plantilla tomada de http://www.bypeople.com/web-chat-widget/
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.1.1/list.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script type="text/javascript" src="{% static 'js/chat.js' %}"></script>
 </head>
 <body>
 <div class="container clearfix">
     <div class="people-list" id="people-list">
         <div class="search">
-            <p style="color: #fff; font-size: 15px;">Usuarios en línea</p>
+            <p style="color: #fff; font-size: 15px;">Online users</p>
         </div>
         <ul class="list" id="user-list"></ul>
     </div>
@@ -30,11 +31,11 @@ Plantilla tomada de http://www.bypeople.com/web-chat-widget/
             <div class="chat-about">
                 <div class="chat-with">{{ user.get_full_name }}</div>
             </div>
-            <a href="{% url 'logout' %}">Cerrar sesión</a>
+            <a href="{% url 'logout' %}">Log out</a>
         </div> <!-- end Chat-header -->
 
         <div class="chat-history">
-            <!-- Campos de control del chat. -->
+            <!-- Chat control fields -->
             <input type="hidden" name="user_id" id="user_id" value="{{ user.id }}"/>
             <input type="hidden" name="messages_url" id="messages_url" value="{% url 'last-n' %}"/>
             <input type="hidden" name="updates_url" id="updates_url" value="{% url 'updates' %}"/>
@@ -43,10 +44,10 @@ Plantilla tomada de http://www.bypeople.com/web-chat-widget/
         </div> <!-- end Chat-history -->
 
         <div class="chat-message clearfix">
-            <textarea name="message-to-send" id="message-to-send" placeholder="Ingresa tu mensaje"
+            <textarea name="message-to-send" id="message-to-send" placeholder="Type your message"
                       rows="3" data-ajax-url="{% url 'post' %}"></textarea>
             <div class="error-msg" id="extra-msg"></div>
-            <button>Enviar</button>
+            <button>Send</button>
         </div>
 
     </div> <!-- end Chat -->
