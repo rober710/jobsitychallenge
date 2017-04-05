@@ -1,32 +1,38 @@
-# Python challenge
+Python challenge
+================
 
-This is a Python challenge to create a chat app in a microservice
+This is a Python challenge to create a chat app with a microservice
 architecture.
 
 * Version: 0.1.0
 
-## Getting started
+Getting started
+---------------
+
 * You must have installed Python 3 and RabbitMQ for this 
 application to work. Make sure RabbitMQ service is up and running.
 
 * Create a virtualenv for this project
 
-
-    virtualenv3 --no-site-packages challenge-env
+```bash
+virtualenv3 --no-site-packages challenge-env
+```
     
 * Clone project from https://github.com/rober710/jobsitychallenge
 
-
-    cd challenge-env
-    git clone https://github.com/rober710/jobsitychallenge challenge
+```bash
+cd challenge-env
+git clone https://github.com/rober710/jobsitychallenge challenge
+```
 
 * Activate the virtualenv and install the requirements listed on
- requirements.txt
+requirements.txt
  
- 
-     cd challenge
-     source bin/activate
-     pip install -r requirements.txt
+ ```bash
+ cd challenge
+ source bin/activate
+ pip install -r requirements.txt
+ ```
 
 ## Usage
 This application consists of a bot that makes queries to the Yahoo
@@ -37,13 +43,15 @@ a RabbitMQ queue.
 
 1. Start the bot process in one shell with the following command:
 
-
-    python bot_main.py
+```bash
+python bot_main.py
+```
     
 2. In another shell, start the Django app with the following command:
 
-
-    python manage.py runserver
+```bash
+python manage.py runserver
+```
     
     
 3. Point your browser to http://127.0.0.1:8000 to see the login page
