@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-"""Funciones utilitarias."""
+"""Utility functions."""
 
 import logging
 
@@ -10,10 +10,10 @@ logger = logging.getLogger('chatroom')
 
 
 def datetime_aware_to_str(timestamp):
-    """Devuelve un datetime con zona horaria convertido a string, en formato ISO 8601"""
+    """Returns an aware datatime converted to string, in ISO 8601 format."""
     if timestamp is None:
         return None
-    # FIXME: Tomar en cuenta información de zona horaria.
+    # FIXME: Take into account timezone information.
     return formats.date_format(timestamp, 'c')
 
 

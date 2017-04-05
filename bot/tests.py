@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-"""Casos de prueba para las llamadas a las APIs de Yahoo! del Bot."""
+"""Test cases for the Bot's Yahoo! API calls."""
 
 import unittest
 
@@ -52,7 +52,7 @@ class BotRequestTest(TestCase):
 
     def test_range_api_incomplete_info(self):
         """
-        Prueba la llamada al API Range usando una compañía que devuelve datos incompletos.
+        Tests the Range API call using a company that returns incomplete data.
         """
         response = self.bot.query_day_range('APPL')
         print('Range API APPL: ' + repr(response))
@@ -97,7 +97,7 @@ class BotRequestTest(TestCase):
         self.assertTrue(obj.get('error', False))
 
     def test_range_api_invalid(self):
-        """Prueba el método del API Range cuando no se envían datos válidos."""
+        """Tests API Range method with invalid input data."""
         response = self.bot.query_day_range([])
         print('Range API []: ' + repr(response))
 

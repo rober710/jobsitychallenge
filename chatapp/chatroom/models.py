@@ -10,21 +10,21 @@ from .utils import datetime_aware_to_str
 
 class Message(models.Model):
     """
-    Representa un mensaje posteado por un usuario.
+    Represents a message posted by a user.
     """
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='messages',
-                             verbose_name='Usuario que posteó el mensaje')
+                             verbose_name='User who posted the message.')
 
-    date_posted = models.DateTimeField('Fecha de posteo')
+    date_posted = models.DateTimeField('Posted date')
 
-    text = models.TextField('Texto del mensaje')
+    text = models.TextField('Message text')
 
     def __str__(self):
-        return 'Mensaje de {0} en {1:%Y%-m-%d %H:%M:%S}'.format(self.user, self.date_posted)
+        return 'Message from {0} at {1:%Y%-m-%d %H:%M:%S}'.format(self.user, self.date_posted)
 
     def to_json_safe_object(self):
         """
-        Devuelve los datos de este objeto como un diccionario que es seguro para ser convertido a JSON.
+        Returns data of this object as a json-safe dictionary
         """
         return {'text': self.text, 'user': {'id': self.user_id, 'username': self.user.username},
                 'timestamp': datetime_aware_to_str(self.date_posted), 'type': 'message'}
@@ -37,27 +37,27 @@ class Message(models.Model):
 
 class CommandMessage(models.Model):
     """
-    Guarda los datos de un comando y su respuesta. Sirve como almacenamiento temporal de los resultados
-    de los comandos hasta que sean consultados por el usuario.
+    Saves the data of a command and its answer. It serves as a temporary storage for command results
+    until they are requested by the user.
     """
-    # Este campo sirve como correlation_id al enviar el mensaje por las colas de RabbitMQ
-    uuid = models.UUIDField('identificador del mensaje', primary_key=True, default=uuid.uuid4, editable=False)
+    # This field holds the correlation_id of the message to match it against the received response.
+    uuid = models.UUIDField('message identifier', primary_key=True, default=uuid.uuid4, editable=False)
 
-    date_posted = models.DateTimeField('fecha de posteo')
+    date_posted = models.DateTimeField('posted date')
 
-    date_answered = models.DateTimeField('fecha de respuesta', null=True, blank=True)
+    date_answered = models.DateTimeField('response date', null=True, blank=True)
 
-    request = models.TextField('mensaje enviado')
+    request = models.TextField('the contents of the message sent')
 
-    response = models.TextField('mensaje recibido', null=True, blank=True)
+    response = models.TextField('the contents of the message received', null=True, blank=True)
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='+',
-                             verbose_name='usuario que envió el comando.')
+                             verbose_name='user who sent the command.')
 
     def __str__(self):
-        return 'Comando {0} de {1}'.format(self.uuid, self.user.username)
+        return 'Command {0} from {1}'.format(self.uuid, self.user.username)
 
     class Meta:
         ordering = ['-date_posted']
-        verbose_name = 'mensaje de comando'
-        verbose_name_plural = 'mensajes de comandos'
+        verbose_name = 'command message'
+        verbose_name_plural = 'command messages'

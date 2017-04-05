@@ -13,8 +13,7 @@ from chatroom.utils import logger
 
 class AjaxView(View):
     """
-    Clase que contiene código genérico para procesar peticiones AJAX. Forza a que las respuestas se envíen
-    como JSON.
+    Generic class to process AJAX requests. Forces responses to be sent in JSON format.
     """
     requires_authentication = True
 
@@ -31,29 +30,31 @@ class AjaxView(View):
 
         try:
             response = handler(request, *args, **kwargs)
-        except Exception:
-            # Si ocurre cualquier excepción no controlada, enviar una respuesta json de error al navegador.
-            logger.exception('Error al procesar petición ajax')
-            return AjaxView.create_error_response('Error al procesar la solicitud. Consulte el log de la '
-                                                  'aplicación para obtener más detalles del problema.')
+        except Exception as e:
+            # Catches unhandled exceptions.
+            logger.error('Error processing ajax request.')
+            logger.exception(e)
+            return AjaxView.create_error_response('Error processing request. Please take a look at the '
+                                                  'application log for more details.')
 
-        # Asegurarse que la respuesta sea json. Si no lo es, tratar de convertirla a json.
+        # Make sure the response is in json format. If not, try to convert it to json.
         if response is None:
-            logger.warn('Respuesta nula para "{0} {1}", en clase {2}'.format(request.method, request.path,
-                                                                             self.__class__.__name__))
+            logger.warn('Null response for "{0} {1}", class {2}'.format(request.method, request.path,
+                                                                        self.__class__.__name__))
             response = JsonResponse('', safe=False)
         elif not isinstance(response, JsonResponse):
             try:
                 response = JsonResponse(response, safe=False)
-            except Exception:
-                logger.exception('Error al convertir la respuesta a json.')
-                response = AjaxView.create_error_response('Error al convertir la respuesta a json')
+            except Exception as e:
+                logger.error('Error serializing answer to json.')
+                logger.exception(e)
+                response = AjaxView.create_error_response('Error serializing answer to json.')
 
         return response
 
     @staticmethod
     def _create_forbidden_response():
-        json_response = json.dumps({'error': True, 'message': 'Acceso denegado'})
+        json_response = json.dumps({'error': True, 'message': 'Forbidden'})
         return HttpResponseForbidden(json_response, content_type='application/json; charset=utf-8')
 
     @staticmethod
@@ -86,13 +87,13 @@ class LoginView(TemplateView):
         password = request.POST.get('pass')
 
         if not user or not password:
-            self.errors.append('No se envió usuario o contraseña')
+            self.errors.append('Username or password not sent.')
             return self.get(request, *args, **kwargs)
 
         user = authenticate(username=user, password=password)
 
         if user is None:
-            self.errors.append('Usuario o contraseña incorrectos')
+            self.errors.append('Wrong username or password')
             return self.get(request, *args, **kwargs)
 
         login(request, user)
