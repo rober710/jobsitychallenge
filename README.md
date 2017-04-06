@@ -71,5 +71,7 @@ For example:
 
 ```
 /stock=AAPL
+--> bot responds: AAPL (Apple, Inc.) quote is $144.190002 per share.
 /day_range=AAPL
+--> bot responds: AAPL (Apple, Inc.) Days Low Quote is $143.47 and Days High is $144.52.
 ```

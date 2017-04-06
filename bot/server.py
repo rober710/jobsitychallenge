@@ -4,7 +4,7 @@
 
 import json, logging, pika
 
-from bot.adapter import ApiException, YahooFinanceApiAdapter
+from bot.api_adapter import ApiException, YahooFinanceApiAdapter
 
 logger = logging.getLogger('chat-bot')
 
