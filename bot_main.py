@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-"""Script para lanzar el bot."""
+"""Script to launch the bot from the command line."""
 
 import logging.config, sys
 

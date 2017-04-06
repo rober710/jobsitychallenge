@@ -46,26 +46,30 @@ a RabbitMQ queue.
 ```bash
 python bot_main.py
 ```
-    
+
 2. In another shell, start the Django app with the following command:
 
 ```bash
+python manage.py migrate
 python manage.py runserver
 ```
-    
-    
+
 3. Point your browser to http://127.0.0.1:8000 to see the login page
 of the application. The sqlite database provided contains two
 users: rober and andre. The password for these users is admin1234567.
 
 4. Start posting messages. Messages are visible to all users.
 You can also post commands to the bot to query financial information
-from the Yahoo API. These two are implemented:
+from the Yahoo API. These two commands are implemented:
 
-* /stock=company_id
-* /day_range=company_id
+```
+/stock=company_id
+/day_range=company_id
+```
 
 For example:
 
-* /stock=AAPL
-* /day_range=AAPL
+```
+/stock=AAPL
+/day_range=AAPL
+```
