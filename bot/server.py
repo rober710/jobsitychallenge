@@ -27,13 +27,13 @@ class Bot(object):
 
     def start(self):
         if not self._configure_message_bus:
-            raise ValueError('Bot cannot start when instanciated with argument use_rabbitmq=False.')
+            raise ValueError('Bot cannot start when instanciated with argument configure_message_bus=False.')
 
         logger.info('Bot started. Waiting for incomming connections...')
         self.channel.start_consuming()
 
     def _process_request(self, ch, method, props, body):
-        # Se espera que el mensaje esté en formato JSON.
+        # Message is expected in JSON format.
         logger.debug('Message (corr_id=%s) received by the bot: %r', props.correlation_id, body)
         try:
             content = json.loads(body.decode(), 'utf-8')

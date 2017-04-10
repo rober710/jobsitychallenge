@@ -54,7 +54,7 @@ class YahooFinanceApiAdapter(object):
 
             return {'companyCode': company_code, 'name': name_fld[0].text, 'price': float(price_fld[0].text),
                     'message': msg_pattern.format(company_code, name_fld[0].text, price_fld[0].text),
-                    'error': False, 'lang': 'es'}
+                    'error': False, 'lang': 'en'}
         except Exception as e:
             msg = 'Error when querying Stock API for company {0}.'.format(company_code)
             raise ApiException(msg, code='BOT03') from e
@@ -84,6 +84,7 @@ class YahooFinanceApiAdapter(object):
 
             # This API always returns a result, even when the code is incorrect. We can check if the
             # company code is valid by inspecting certain fields in the answer. If they are empty,
+            # we assume there is no information associated with the company ID given.
             msg_pattern = '{0} ({1}) Days Low quote is ${2} and Days High is ${3}.'
             results = []
 
@@ -101,7 +102,7 @@ class YahooFinanceApiAdapter(object):
                                                                   'for company {0}'.format(code)})
                         continue
 
-                    results.append({'companyCode': code, 'name': comp_name, 'error': False, 'lang': 'es',
+                    results.append({'companyCode': code, 'name': comp_name, 'error': False, 'lang': 'en',
                                     'daysLow': float(days_low), 'daysHigh': float(days_high),
                                     'message': msg_pattern.format(code, comp_name, days_low, days_high)})
                 except (IndexError, TypeError, ValueError, AttributeError) as e:
